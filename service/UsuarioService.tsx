@@ -4,11 +4,12 @@ import axios from "axios";
 
 export const axiosInstance = axios.create({
     baseURL: "http://localhost:8080"
-    
+
 })
 
 export class UsuarioService{
-    
+
+
     listarTodos()
     {
         return axiosInstance.get("/usuario");
@@ -26,5 +27,5 @@ export class UsuarioService{
         return axiosInstance.delete("/usuario" + id)
     }
 
-    
+
 }
