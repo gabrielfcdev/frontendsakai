@@ -75,6 +75,7 @@ const Usuario = () => {
             .then((response) => {
                 setUsuarioDialog(false);
                 setUsuario(usuarioVazio);
+                setUsuarios([]);
                 toast.current?.show({
                     severity:'info',
                     summary: 'Sucesso!',
@@ -96,6 +97,7 @@ const Usuario = () => {
            .then((response) => {
             setUsuarioDialog(false);
             setUsuario(usuarioVazio);
+            setUsuarios([]);
             toast.current?.show({
                 severity:'info',
                 summary: 'Sucesso!',
@@ -120,7 +122,7 @@ const Usuario = () => {
         setUsuarioDialog(true);
     };
 
-    const confirmDeleteUsuario = (product: Projeto.Usuario) => {
+    const confirmDeleteUsuario = (usuario: Projeto.Usuario) => {
         setUsuario(usuario);
         setDeleteUsuarioDialog(true);
     };
@@ -193,10 +195,11 @@ const Usuario = () => {
     };
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
         const val = (e.target && e.target.value) || '';
-        let _usuario = { ...usuario };
-        _usuario[`${name}`] = val;
+        setUsuario(prevUsuario => ({
+            ...prevUsuario,
+            [name]: val,
 
-        setUsuario(_usuario);
+        }));
     };
 
 
@@ -357,7 +360,7 @@ const Usuario = () => {
                                 required
                                 autoFocus
                                 className={classNames({
-                                    'p-invalid': submitted && !usuario.nome
+                                    'p-invalid': submitted && !usuario.login
                                 })}
                             />
                             {submitted && !usuario.login && <small className="p-invalid">Login é obrigatório.</small>}
@@ -394,7 +397,7 @@ const Usuario = () => {
 
                     </Dialog>
 
-                    <Dialog visible={deleteUsuarioDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteUsuarioDialogFooter} onHide={hideDeleteUsuarioDialog}>
+                    <Dialog visible={deleteUsuarioDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteUsuarioDialogFooter} onHide={hideDeleteUsuarioDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                             {usuario && (
@@ -405,7 +408,7 @@ const Usuario = () => {
                         </div>
                     </Dialog>
 
-                    <Dialog visible={deleteUsuariosDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteUsuariosDialogFooter} onHide={hideDeleteUsuariosDialog}>
+                    <Dialog visible={deleteUsuariosDialog} style={{ width: '450px' }} header="Confirmar" modal footer={deleteUsuariosDialogFooter} onHide={hideDeleteUsuariosDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                             {usuario && <span>Você realmente deseja excluir os usúarios selecionados?</span>}
