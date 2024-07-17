@@ -1,4 +1,5 @@
 import axios from "axios";
+import { BaseService } from "./BaseService";
 
 
 
@@ -7,25 +8,12 @@ export const axiosInstance = axios.create({
 
 })
 
-export class UsuarioService{
+export class UsuarioService extends BaseService {
 
-
-    listarTodos()
-    {
-        return axiosInstance.get("/usuario");
+    constructor(){
+        super("/usuario");
     }
 
-    inserir(usuario : Projeto.Usuario){
-        return axiosInstance.post("/usuario", usuario)
-    }
-
-    alterar(usuario : Projeto.Usuario){
-        return axiosInstance.put("/usuario", usuario)
-    }
-
-    excluir(id : Projeto.Usuario){
-        return axiosInstance.delete("/usuario" + id)
-    }
 
 
 }
