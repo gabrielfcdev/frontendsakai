@@ -102,7 +102,6 @@ const Usuario = () => {
                 severity:'info',
                 summary: 'Sucesso!',
                 detail: 'Usúario alterado com sucesso!'
-
             });
            }).catch((error) => {
             console.log(error.data.message);

@@ -14,9 +14,9 @@ export class BaseService{
     constructor(url : string){
         this.url = url;
     }
-    listarTodos()
+    listarTodos():Promise<AxiosResponse<any>>
     {
-        return axiosInstance.get(this.url).then;
+        return axiosInstance.get(this.url);
     }
     buscarPorId(id : number){
         return axiosInstance.get(this.url + "/" + id);
