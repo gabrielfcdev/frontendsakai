@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
 import { BaseService } from "./BaseService";
-export class UsuarioService extends BaseService {
+
+export class PerfilService extends BaseService{
     constructor(){
-        super("/usuario");
+        super("/perfil");
     }
 }
