@@ -39,7 +39,8 @@ const PerfilUsuario = () => {
     const usuarioService = useMemo(() => new UsuarioService(), []);
     const perfilService = useMemo(() => new PerfilService(), []);
     const [usuarios, setUsuarios] = useState<Projeto.Usuario[]>([]);
-    const [perfis, setPerfis] = useState<Projeto.Perfil[]>([]);
+    const [perfis, setPerfis] = useState<Projeto.Perfil[] >([]);
+
 
     useEffect(() => {
         if (!perfisUsuario) {
@@ -53,7 +54,7 @@ const PerfilUsuario = () => {
         }
     }, [perfilUsuarioService, perfisUsuario]);
 
-    useEffect(() => {
+    useEffect(() =>{
         if(perfilUsuarioDialog){
             usuarioService.listarTodos()
             .then((response) => setUsuarios(response.data))
@@ -77,6 +78,31 @@ const PerfilUsuario = () => {
             });
         }
     }, [perfilUsuarioDialog, perfilService, usuarioService]);
+
+    useEffect(() => {
+        if(perfilUsuarioDialog){
+            perfilUsuarioService.listarTodos()
+            .then((response) => setPerfilUsuario(response.data))
+            .catch(error => {
+                console.log(error);
+                toast.current?.show({
+                    severity: 'info',
+                    summary: 'Erro!',
+                    detail: 'Erro ao carregar a lista de usuário!'
+                });
+            });
+            perfilUsuarioService.listarTodos()
+            .then((response) => setPerfilsUsuario(response.data))
+            .catch(error => {
+                console.log(error);
+                toast.current?.show({
+                    severity: 'info',
+                    summary: 'Erro!',
+                    detail: 'Erro ao carregar a lista de perfil!'
+                });
+            });
+        }
+    }, [perfilUsuarioDialog, perfilUsuarioService, usuarioService]);
 
 
     const openNew = () => {
@@ -267,7 +293,7 @@ const PerfilUsuario = () => {
         return (
             <>
                 <span className="p-column-title">descricao</span>
-                {rowData.perfil}
+                {rowData.perfil.descricao}
             </>
         );
     };
@@ -275,7 +301,7 @@ const PerfilUsuario = () => {
         return (
             <>
                 <span className="p-column-title">usuario</span>
-                {rowData.usuario}
+                {rowData.usuario.usuario}
             </>
         );
     };
@@ -318,7 +344,16 @@ const PerfilUsuario = () => {
             <Button label="Sim" icon="pi pi-check" text onClick={deleteSelectedPerfilsUsuario} />
         </>
     );
-
+    const onSelectPerfilChange = (perfil: Projeto.Perfil) => {
+        let _perfilUsuario = {...perfilUsuario};
+        _perfilUsuario.perfil = perfil;
+        setPerfilUsuario(_perfilUsuario);
+    }
+    const onSelectUsuarioChange = (usuario: Projeto.Usuario) => {
+        let _perfilUsuario = {...perfilUsuario};
+        _perfilUsuario.usuario = usuario;
+        setPerfilUsuario(_perfilUsuario);
+    }
 
     return (
         <div className="grid crud-demo">
@@ -357,17 +392,16 @@ const PerfilUsuario = () => {
 
                         <div className="field">
                             <label htmlFor="perfil">Perfil</label>
-                            <InputText
-                                id="perfil"
-                                value={perfilUsuario.perfil}
-                                onChange={(e) => onInputChange(e, 'perfil')}
-                                required
-                                autoFocus
-                                className={classNames({
-                                    'p-invalid': submitted && !perfilUsuario.perfil
-                                })}
-                            />
+                            <Dropdown optionLabel='descricao' value={perfilUsuario.perfil} options={perfis} filter onChange={(e: DropdownChangeEvent) => onSelectPerfilChange(e.value)} placeholder='Selecione um perfil...'></Dropdown>
+
                             {submitted && !perfilUsuario.perfil && <small className="p-invalid">Perfil é obrigatório.</small>}
+                        </div>+
+                        <div className="field">
+                            <label htmlFor="usuario">Usuário</label>
+                            <Dropdown optionLabel='nome' value={perfilUsuario.usuario} options={usuarios} filter onChange={(e: DropdownChangeEvent) => onSelectUsuarioChange(e.value)} placeholder='Selecione um usuario...'></Dropdown>
+
+
+                            {submitted && !perfilUsuario.usuario && <small className="p-invalid">Usuario é obrigatório.</small>}
                         </div>
 
                     </Dialog>

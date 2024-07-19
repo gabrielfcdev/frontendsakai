@@ -18,7 +18,7 @@ declare namespace Projeto {
     };
     type PerfilUsuario = {
         id?: number;
-        perfil: Perfil;
-        usuario: Usuario;
+        perfil: PerfilUsuario.Perfil;
+        usuario: PerfilUsuario.Usuario;
     }
 }
